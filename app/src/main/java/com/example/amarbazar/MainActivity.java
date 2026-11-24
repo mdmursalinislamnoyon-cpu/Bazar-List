@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
         settings.setDomStorageEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
-
         settings.setBuiltInZoomControls(false);
         settings.setDisplayZoomControls(false);
 
@@ -43,7 +42,18 @@ public class MainActivity extends Activity {
         );
 
         webView.setWebChromeClient(new WebChromeClient());
-        webView.setWebViewClient(new WebViewClient());
+
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                view.evaluateJavascript(
+                    "window.print = function() {" +
+                    "AndroidPrint.printPage();" +
+                    "};",
+                    null
+                );
+            }
+        });
 
         webView.loadUrl("file:///android_asset/index.html");
     }
