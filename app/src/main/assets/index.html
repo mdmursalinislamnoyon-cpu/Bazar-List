@@ -103,9 +103,9 @@ $('printBtn').onclick = () => {
     $('grandTotal').textContent = money(total);
     $('printTotal').textContent = 'সর্বমোট: ' + money(total);
 
-    window.onafterprint = () => {
-        renderEntries();
-        window.onafterprint = null;
+   // window.onafterprint = () => {
+        //renderEntries();
+        //window.onafterprint = null;
     };
 
     setTimeout(() => {
