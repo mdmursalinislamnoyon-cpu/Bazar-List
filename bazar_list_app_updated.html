@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#176b52"><title>আমার বাজার তালিকা</title>
+<style>
+:root{--green:#176b52;--pale:#eaf5ef;--ink:#17231e;--muted:#68766f;--line:#dce6df;--bg:#f4f7f5}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Noto Sans Bengali","Arial",sans-serif}header{background:var(--green);color:white;padding:20px 16px 22px}header h1{font-size:22px;margin:0 0 4px}header p{margin:0;font-size:13px;opacity:.9}.wrap{max-width:760px;margin:auto;padding:14px}.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:13px;box-shadow:0 2px 10px #10291a08}.section-title{font-weight:750;margin:0 0 12px;font-size:16px}.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px}.field input,.search{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff;min-width:0}.search{margin-bottom:10px}.items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.item{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px;text-align:left;font:inherit;display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:46px}.item:active{background:var(--pale)}.item small{color:var(--green);font-size:11px}.addrow{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}.btn{border:0;border-radius:10px;padding:11px 14px;font:inherit;font-weight:700;background:var(--green);color:#fff}.btn.secondary{background:var(--pale);color:var(--green)}.btn.danger{background:#fff0ee;color:#a83225}.selected{display:flex;flex-direction:column;gap:9px}.entry{border:1px solid var(--line);border-radius:12px;padding:11px}.entry-top{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:9px}.entry-name{font-weight:750}.entry-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.entry-fields input{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px;font:inherit}.entry-fields label{font-size:11px;color:var(--muted)}.entry-fields label input{display:block;margin-top:4px}.entry-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:13px}.remove{border:0;background:none;color:#b13b30;font-size:13px;padding:4px}.total{display:flex;justify-content:space-between;align-items:center;background:var(--pale);padding:15px;border-radius:12px;margin-top:12px}.total strong{font-size:22px;color:var(--green)}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.hint{font-size:12px;color:var(--muted);line-height:1.5;margin:9px 0 0}.empty{text-align:center;color:var(--muted);padding:18px 5px;font-size:13px}.footer{text-align:center;color:var(--muted);font-size:11px;padding:8px 0 22px}
+@media(min-width:600px){.items{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media print{@page{size:A4;margin:14mm}body{background:#fff;color:#111;font-family:"Noto Sans Bengali",Arial,sans-serif}.no-print,header,.footer{display:none!important}.wrap{max-width:none;padding:0}.panel{border:0;box-shadow:none;border-radius:0;padding:0;margin:0 0 12px}.total{display:none}.print-head{display:block!important;text-align:center;border-bottom:2px solid #222;padding-bottom:10px;margin-bottom:12px}.print-head h1{font-size:22px;margin:0 0 4px}.print-meta{display:flex;justify-content:space-between;font-size:12px;margin:10px 0 14px}.print-table{width:100%;border-collapse:collapse;font-size:13px}.print-table th,.print-table td{border:1px solid #555;padding:7px 8px;text-align:left}.print-table th{text-align:center;background:#f1f1f1}.print-table td:nth-child(1),.print-table td:nth-child(3),.print-table td:nth-child(4){text-align:center}.print-table tfoot td{font-weight:bold}.print-total{text-align:right;font-size:16px;font-weight:bold;margin-top:12px}.signatures{display:flex;justify-content:space-between;margin-top:48px;font-size:12px}.print-only{display:block!important}}
+.print-head,.print-only{display:none}
+</style></head>
+<body>
+<header class="no-print"><h1>🛒 আমার বাজার তালিকা</h1><p>পণ্য বাছাই করুন, দাম লিখুন, মোট হিসাব দেখুন এবং প্রিন্ট করুন।</p></header>
+<main class="wrap">
+<section class="panel no-print"><h2 class="section-title">বাজারের তথ্য</h2><div class="meta">
+<div class="field"><label for="market">বাজার / দোকানের নাম</label><input id="market" placeholder="যেমন: কাঁচাবাজার"></div>
+<div class="field"><label for="buyer">ক্রেতার নাম</label><input id="buyer" placeholder="নাম (ঐচ্ছিক)"></div>
+<div class="field"><label for="date">তারিখ</label><input id="date" type="date"></div>
+<div class="field"><label for="phone">মোবাইল (ঐচ্ছিক)</label><input id="phone" inputmode="tel" placeholder="মোবাইল নম্বর"></div>
+</div></section>
+<section class="panel no-print"><h2 class="section-title">পণ্য নির্বাচন</h2><input class="search" id="search" placeholder="পণ্যের নাম খুঁজুন..." autocomplete="off"><div class="items" id="catalog"></div><div class="addrow"><input class="field-input search" id="newItem" style="margin:0" placeholder="নতুন পণ্যের নাম"><button class="btn secondary" id="addItem">+ পণ্য যোগ</button></div><p class="hint">পণ্যের নামের ওপর চাপ দিলে নিচের তালিকায় যুক্ত হবে। নিজের প্রয়োজনমতো নতুন পণ্যও যোগ করতে পারবে।</p></section>
+<section class="panel"><div class="no-print"><h2 class="section-title">নির্বাচিত পণ্য</h2></div><div class="print-head"><h1>বাজারের তালিকা</h1><div id="printMarket"></div></div><div class="print-meta print-only"><span id="printBuyer"></span><span id="printDate"></span></div><div id="selected" class="selected"><div class="empty">এখনো কোনো পণ্য নির্বাচন করা হয়নি।</div></div>
+<div class="no-print" id="submitControls" style="margin-top:10px;display:none"><button class="btn" id="submitBtn" style="width:100%">✓ Submit তালিকা</button></div>
+<div class="no-print" style="margin-top:12px">
+  <button class="btn secondary" id="toggleSubmitted" style="width:100%">জমা দেওয়া পণ্য দেখুন</button>
+</div>
+<div class="no-print" id="submittedPanel" style="display:none;margin-top:12px;border-top:1px solid var(--line);padding-top:12px">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px">
+    <h3 style="margin:0;font-size:15px">জমা দেওয়া পণ্য</h3>
+    <button class="btn secondary" id="editSubmitted">✎ Edit</button>
+  </div>
+  <div id="submittedList" class="selected"></div>
+</div>
+<div class="total"><span>সর্বমোট</span><strong id="grandTotal">৳ ০</strong></div><div class="print-total print-only" id="printTotal"></div><div class="signatures print-only"><span>ক্রেতার স্বাক্ষর: __________________</span><span>বিক্রেতার স্বাক্ষর: __________________</span></div></section>
+<section class="panel no-print"><div class="actions"><button class="btn" id="printBtn">🖨️ প্রিন্ট / PDF</button><button class="btn secondary" id="clearBtn">সব মুছুন</button></div><p class="hint">তোমার তথ্য এই ফোনের ব্রাউজারেই সেভ হবে। অ্যাপটি ইন্টারনেট ছাড়াই ব্যবহার করা যাবে। প্রিন্ট চাপলে Print থেকে Save as PDF-ও বেছে নিতে পারবে।</p></section>
+<div class="footer no-print">সম্পূর্ণ অফলাইন • তথ্য এই ডিভাইসেই সংরক্ষিত</div>
+</main>
+<script>
+const defaults=['চাল','ডিম','মাছ','আলু','বেগুন','পটল','টমেটো','ফুলকপি','পাতাকপি','ঢেঁড়স','মিষ্টি কুমড়া','শাক','মসলা','লাউ','ধনেপাতা','শিম','করলা','বরবটি','কাঁচামরিচ','গাজর','ছোলা','কাকরোল','পেঁপে','সজনা','ঝিঙা','উচ্ছে','ডাল','তেল','পেঁয়াজ','রসুন','হলুদ','পিয়াজকলি','রসুন','মাছ','অন্যান্য'];
+const $=id=>document.getElementById(id);
+let catalog=[],entries=[],submitted=[],editingSubmitted=false,showSubmitted=false;
+try{catalog=JSON.parse(localStorage.getItem('bazar_catalog'))||defaults.slice()}catch{catalog=defaults.slice()}
+try{entries=JSON.parse(localStorage.getItem('bazar_entries'))||[]}catch{entries=[]}
+try{submitted=JSON.parse(localStorage.getItem('bazar_submitted'))||[]}catch{submitted=[]}
+const today=new Date();$('date').value=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+function bn(n){return Number(n||0).toLocaleString('bn-BD',{maximumFractionDigits:2})}
+function money(n){return '৳ '+bn(n)}
+function save(){localStorage.setItem('bazar_catalog',JSON.stringify(catalog));localStorage.setItem('bazar_entries',JSON.stringify(entries));localStorage.setItem('bazar_submitted',JSON.stringify(submitted))}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderCatalog(){
+ let q=$('search').value.trim().toLowerCase();$('catalog').innerHTML='';
+ catalog.filter(x=>x.toLowerCase().includes(q)).forEach(name=>{
+  let b=document.createElement('button');b.className='item';b.innerHTML='<span></span><small>+ যোগ</small>';
+  b.firstChild.textContent=name;b.onclick=()=>addEntry(name);$('catalog').append(b)
+ })
+}
+function addEntry(name){
+ let found=entries.find(x=>x.name===name);
+ if(found){found.count=(found.count||1)+1}else entries.push({id:Date.now()+Math.random(),name,qty:'',unit:'কেজি',price:''});
+ save();renderEntries()
+}
+function makeEntryCard(e,i,isSubmitted){
+ let box=document.createElement('div');box.className='entry';
+ let canEdit=!isSubmitted||editingSubmitted;
+ box.innerHTML=`<div class="entry-top"><span class="entry-name"></span>${canEdit?'<button class="remove" type="button">বাদ দিন ✕</button>':'<small style="color:var(--green)">জমা হয়েছে ✓</small>'}</div>
+ <div class="entry-fields">
+ <label>পরিমাণ (ঐচ্ছিক)<input class="qty" placeholder="যেমন ২" value="" ${canEdit?'':'disabled'}></label>
+ <label>একক<select class="unit" style="display:block;width:100%;margin-top:4px;padding:9px;border:1px solid var(--line);border-radius:8px;font:inherit" ${canEdit?'':'disabled'}><option>কেজি</option><option>গ্রাম</option><option>লিটার</option><option>মিলিলিটার</option><option>পিস</option><option>ডজন</option><option>প্যাকেট</option><option>অন্যান্য</option></select></label>
+ <label style="grid-column:1/-1">দাম (টাকা)<input class="price" inputmode="decimal" placeholder="দাম লিখুন" value="" ${canEdit?'':'disabled'}></label>
+ </div><div class="entry-bottom"><span>এই পণ্যের দাম</span><b class="subtotal">৳ ০</b></div>`;
+ box.querySelector('.entry-name').textContent=e.name;
+ box.querySelector('.qty').value=e.qty||'';
+ box.querySelector('.unit').value=e.unit||'কেজি';
+ box.querySelector('.price').value=e.price||'';
+ if(canEdit){
+  box.querySelector('.remove').onclick=()=>{(isSubmitted?submitted:entries).splice(i,1);save();renderEntries();renderSubmitted()};
+  box.querySelector('.qty').oninput=ev=>{e.qty=ev.target.value;save();renderTotals()};
+  box.querySelector('.unit').onchange=ev=>{e.unit=ev.target.value;save()};
+  box.querySelector('.price').oninput=ev=>{e.price=ev.target.value;save();renderTotals()};
+ }
+ return box
+}
+function renderEntries(){
+ let root=$('selected');root.innerHTML='';
+ if(!entries.length)root.innerHTML='<div class="empty">নতুন কোনো পণ্য নির্বাচন করা হয়নি।</div>';
+ entries.forEach((e,i)=>root.append(makeEntryCard(e,i,false)));
+ $('submitControls').style.display=entries.length?'block':'none';
+ renderTotals()
+}
+function renderSubmitted(){
+ $('submittedPanel').style.display=showSubmitted?'block':'none';
+ $('toggleSubmitted').textContent=showSubmitted?'জমা দেওয়া পণ্য লুকান':'জমা দেওয়া পণ্য দেখুন';
+ $('editSubmitted').textContent=editingSubmitted?'সম্পাদনা শেষ':'✎ Edit';
+ let root=$('submittedList');root.innerHTML='';
+ if(!submitted.length)root.innerHTML='<div class="empty">এখনো কোনো পণ্য Submit করা হয়নি।</div>';
+ submitted.forEach((e,i)=>root.append(makeEntryCard(e,i,true)));
+}
+function renderTotals(){
+ let total=[...entries,...submitted].reduce((sum,e)=>sum+(parseFloat(e.price)||0),0);
+ $('grandTotal').textContent=money(total);$('printTotal').textContent='সর্বমোট: '+money(total)
+}
+$('search').addEventListener('input',renderCatalog);
+$('addItem').onclick=()=>{let n=$('newItem').value.trim();if(!n)return;if(!catalog.includes(n)){catalog.push(n);save();renderCatalog()}$('newItem').value='';addEntry(n)};
+$('newItem').addEventListener('keydown',e=>{if(e.key==='Enter')$('addItem').click()});
+$('submitBtn').onclick=()=>{
+ if(!entries.length)return;
+ submitted.push(...entries);entries=[];save();renderEntries();renderSubmitted();
+ alert('পণ্যগুলো Submit হয়েছে। এখন সেগুলো লুকানো থাকবে; “জমা দেওয়া পণ্য দেখুন” থেকে দেখতে পারবে।')
+};
+$('toggleSubmitted').onclick=()=>{showSubmitted=!showSubmitted;renderSubmitted()};
+$('editSubmitted').onclick=()=>{editingSubmitted=!editingSubmitted;renderSubmitted();renderTotals()};
+$('printBtn').onclick=()=>{
+ let all=[...submitted,...entries];
+ if(!all.length){alert('প্রিন্ট করার আগে অন্তত একটি পণ্য নির্বাচন করুন।');return}
+ let rows=all.map((e,i)=>`<tr><td>${bn(i+1)}</td><td>${escapeHtml(e.name)}</td><td>${e.qty?escapeHtml(e.qty+' '+(e.unit||'')):'—'}</td><td>${money(parseFloat(e.price)||0)}</td></tr>`).join('');
+ let table=`<table class="print-table"><thead><tr><th>ক্রমিক</th><th>পণ্যের নাম</th><th>পরিমাণ</th><th>মূল্য</th></tr></thead><tbody>${rows}</tbody></table>`;
+ $('selected').innerHTML=table;
+ let total=all.reduce((sum,e)=>sum+(parseFloat(e.price)||0),0);
+ $('printMarket').textContent=$('market').value||'বাজারের তালিকা';
+ $('printBuyer').textContent='ক্রেতা: '+($('buyer').value||'—')+'   মোবাইল: '+($('phone').value||'—');
+ $('printDate').textContent='তারিখ: '+($('date').value||'—');
+ $('grandTotal').textContent=money(total);$('printTotal').textContent='সর্বমোট: '+money(total);
+ window.print();renderEntries()
+};
+$('clearBtn').onclick=()=>{
+ if(confirm('নির্বাচিত ও জমা দেওয়া সব পণ্য এবং দাম মুছে ফেলবেন?')){
+  entries=[];submitted=[];save();renderEntries();renderSubmitted()
+ }
+};
+renderCatalog();renderEntries();renderSubmitted();
+</script></body></html>
